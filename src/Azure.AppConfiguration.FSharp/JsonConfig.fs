@@ -72,9 +72,9 @@ module JsonConfig =
             handleKeyValue acc value |> ignore
         acc
 
-    let bind<'T> (config: IConfiguration) =
+    let bind<'T> (settings: JsonSerializerSettings) (config: IConfiguration) =
         let values = config.AsEnumerable()
         let json = rebuildJson values
-        let jsonStr = JsonConvert.SerializeObject json
-        let cfg = JsonConvert.DeserializeObject<'T>(jsonStr)
+        let jsonStr = JsonConvert.SerializeObject(json, settings)
+        let cfg = JsonConvert.DeserializeObject<'T>(jsonStr, settings)
         cfg
