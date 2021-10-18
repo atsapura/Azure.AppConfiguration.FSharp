@@ -27,4 +27,49 @@ Also you can't configure serialization settings for that.
 5. ??????
 6. PROFIT
 
+As a result, your code would look like this:
+
+```fsharp
+type EmailTopics =
+    | Notifications
+    | Promotions
+    | TechSupport
+
+type EmailTopicConfig =
+    {
+        FromEmail: string
+        ToEmail: string
+        Bcc: string option
+        Topic: EmailTopic
+    }
+
+type EmailConfig =
+    {
+        Notifications: EmailTopicConfig
+        Promotions: EmailTopicConfig
+        TechSupport: EmailTopicConfig
+    }
+    member this.ForTopic topic =
+        match topic with
+        | Notifications -> this.Notifications
+        | Promotions -> this.Promotions
+        | TechSupport -> this.TechSupport
+
+type MyConfig =
+    {
+        Emails: EmailConfig
+        DbConnectionString: string
+    }
+
+...
+
+[<FunctionName("my-function")>]
+let testConfig
+     ([<TimerTrigger("* * * * * *")>]timer: TimerInfo)
+     ([<Inject>] config: MyConfig) =
+     let promoEmails = config.Emails.ForTopic Promotions
+     Console.WriteLine ($"Here's your config for promo emails!: %A{promoEmails}")
+     ()
+```
+
 See [samples](https://github.com/atsapura/Azure.AppConfiguration.FSharp/tree/main/samples/Azure.AppConfiguration.FSharp.Samples) for more.
