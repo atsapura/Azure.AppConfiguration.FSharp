@@ -16,6 +16,7 @@ Statically typed config, especially with F# records, solves those problems. With
 ### Okay, but why not just use `.Get<T>` extension method which does the same thing?
 
 Because that method implementation is a couple of centuries behind. While, e.g. `Newtonsoft.Json` can easily deal with immutable types with no public default constructor available (Both F# records and Unions), this extension method can't do any of those things. It can't handle arrays, it can't handle options, let alone some custom union types. Which means you've got to do in-place checks for nulls, empty strings and stuff like that, which is still has that dynamic touch to it.
+Also you can't configure serialization settings for that.
 
 ## How to use
 
@@ -25,3 +26,5 @@ Because that method implementation is a couple of centuries behind. While, e.g. 
 4. Use `[<Inject>]` attribute to inject that config in your Azure Function.
 5. ??????
 6. PROFIT
+
+See [samples](https://github.com/atsapura/Azure.AppConfiguration.FSharp/tree/main/samples/Azure.AppConfiguration.FSharp.Samples) for more.
